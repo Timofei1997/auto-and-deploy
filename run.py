@@ -6,9 +6,10 @@ from datetime import datetime, timedelta
 
 from pgdb import PGDatabase
 
+dirname = os.path.dirname(__file__)
 
 config = configparser.ConfigParser()
-config.read("config.ini")
+config.read(os.path.join(dirname, "config.ini"))
 
 SALES_PATH = config["Files"]["SALES_PATH"]
 COMPANIES = eval(config["Companies"]["COMPANIES"])
@@ -46,4 +47,3 @@ for company, data in historical_d.items():
         dict_row = dict(row)
         query = f"insert into stock (dt, company, open, close) VALUES  ('{dict_row[("Date", "")].strftime("%Y-%m-%d")}', '{company}', {dict_row[('Open', company)]}, {dict_row[('Close', company)]})"
         database.post(query)
-        dict_row = {}
